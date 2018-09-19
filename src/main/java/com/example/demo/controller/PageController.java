@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,20 +19,24 @@ public class PageController {
 		return "viral";
 	}
 	
-	@RequestMapping("/challange")
-	public String challange(@RequestParam(value = "name") String name, Model model) {
+	@RequestMapping("/challenge")
+	public String challenge(@RequestParam(value = "name") String name, Model model) {
 		
-		// Add name's value into model and return challange.html
+		// Add name's value into model and return challenge.html
 		model.addAttribute("name", name);
-		return "challange";
+		return "challenge";
 	}
 	
-	@RequestMapping("/challange/{name}")
-	public String challangePath(@PathVariable String name, Model model) {
+	@RequestMapping(value = {"/challenge/", "/challenge/{name}"})
+	public String challengePath(@PathVariable Optional<String> name, Model model) {
 		
-		// like before but using request path
-		model.addAttribute("name", name);
-		return "challange";
+		if (name.isPresent()) {
+			model.addAttribute("name", name.get());
+		} else {
+			model.addAttribute("name", "KB");
+		}
+		
+		return "challenge";
 	}
 	
 	@RequestMapping("/generator")
